@@ -66,7 +66,7 @@ class Dashboard extends React.Component {
 
     this.yScale = d3.scaleLinear()
       .domain([0, this.maxValue])
-      .range([this.height, 0])
+      .range([this.height, 0]);
 
     this.svg = d3.select('.line-chart').append('svg')
       .attr('width', this.svgWidth)
@@ -82,10 +82,12 @@ class Dashboard extends React.Component {
     this.svg.append('g')
       .attr('class', 'y axis')
       .attr('transform', `translate(${shiftAxis}, 0)`)
-      .call(d3.axisLeft(this.yScale));
+      .call(d3.axisLeft(this.yScale).ticks(5))
+      .call(g => g.select(".domain").remove());
 
     this.addLine('blue');
     this.addLine('orange');
+    this.addLine('green');
   }
 
   render() {
