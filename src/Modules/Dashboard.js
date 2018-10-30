@@ -37,6 +37,35 @@ class Dashboard extends React.Component {
       .y((d) => this.yScale(d.y))
       .curve(d3.curveMonotoneX);
 
+    const areaGradient = this.svg.append('defs')
+      .append('linearGradient')
+      .attr('id', 'areaGradient')
+      .attr('x1', '0%').attr('y1', '0%')
+      .attr('x2', '0%').attr('y2', '100%');
+
+    areaGradient.append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', 'lightseagreen')
+      .attr('stop-opacity', 0.6);
+
+    areaGradient.append('stop')
+      .attr('offset', '80%')
+      .attr('stop-color', 'white')
+      .attr('stop-opacity', 0);
+
+    const area = d3.area()
+      .x((d, i) => this.xScale(i))
+      .y0(this.yScale(0))
+      .y1(d => this.yScale(d.y))
+      .curve(d3.curveMonotoneX);
+
+    // area chart
+    this.svg.append('path')
+      .datum(dataset)
+      .style('fill', 'url(#areaGradient)')
+      .attr('d', area);
+
+    // line
     this.svg.append('path')
       .datum(dataset)
       .attr('class', `line ${color}`)
@@ -86,8 +115,6 @@ class Dashboard extends React.Component {
       .call(g => g.select(".domain").remove());
 
     this.addLine('blue');
-    this.addLine('orange');
-    this.addLine('green');
   }
 
   render() {
