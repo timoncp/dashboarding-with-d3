@@ -7,7 +7,7 @@ import './Content.css';
 
 const Content = () => (
   <div className='Content'>
-    { Modules.map(mod => <Route { ...mod } />) }
+    { Modules.map((mod, i) => <Route { ...mod } key={i} />) }
   </div>
 );
 

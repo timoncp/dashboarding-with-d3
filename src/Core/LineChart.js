@@ -36,6 +36,21 @@ const drawLine = (data, color) => (
   />
 );
 
+const drawDots = (data, color) => data.map(point =>
+  <circle
+    cx={x(point.x)}
+    cy={y(point.y)}
+    r={5}
+    fill={color}
+    strokeWidth='10%'
+    pointerEvents='all'
+    className='dot'
+    cursor='pointer'
+    onPointerEnter={e => e.target.setAttribute('r', '10')}
+    onPointerLeave={e => e.target.setAttribute('r', '5')}
+  />
+);
+
 const drawArea = (data) => (
   <path
     d={area(data)}
@@ -65,16 +80,17 @@ export default (props) => {
             .call(axisLeft(y).ticks(5))
             .call(g => g.select('.domain').remove())}
         />
-        <g className="lines">
-          { drawLine(data, color) }
-        </g>
         <g className="areas">
           { drawArea(data, color) }
         </g>
+        <g className="lines">
+          { drawLine(data, color) }
+          { drawDots(data, color) }
+        </g>
         <defs>
           <linearGradient id='areaGradient' x1='0%' y1='15%' x2='0%' y2='100%'>
-            <stop offset='0%' stop-color={color} stop-opacity='0.6' />
-            <stop offset='100%' stop-color='white' stop-opacity='0' />
+            <stop offset='0%' stopColor={color} stopOpacity='0.6' />
+            <stop offset='100%' stopColor='white' stopOpacity='0.5' />
           </linearGradient>
         </defs>
       </g>
